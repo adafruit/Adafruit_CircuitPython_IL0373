@@ -80,8 +80,15 @@ class IL0373(displayio.EPaperDisplay):
         start_sequence[26] = width & 0xFF
         start_sequence[27] = (height >> 8) & 0xFF
         start_sequence[28] = height & 0xFF
+
+        if "third_color" not in kwargs:
+            _write_black_ram_command = 0x13
+            start_sequence[17] = 0xdf
+        else:
+            _write_black_ram_command = 0x10
+
         super().__init__(bus, start_sequence, _STOP_SEQUENCE, **kwargs,
                          ram_width=160, ram_height=296,
                          busy_state=False,
-                         write_black_ram_command=0x10, write_color_ram_command=0x13,
+                         write_black_ram_command=_write_black_ram_command, write_color_ram_command=0x13,
                          color_bits_inverted=True, refresh_display_command=0x12)
