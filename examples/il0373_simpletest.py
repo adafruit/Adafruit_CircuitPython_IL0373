@@ -7,7 +7,6 @@ Supported products:
 
 import time
 import board
-import busio
 import displayio
 import adafruit_il0373
 

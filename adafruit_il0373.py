@@ -95,7 +95,8 @@ class IL0373(displayio.EPaperDisplay):
         super().__init__(bus, start_sequence, _STOP_SEQUENCE, **kwargs,
                          ram_width=160, ram_height=296,
                          busy_state=False,
-                         write_black_ram_command=write_black_ram_command, write_color_ram_command=write_color_ram_command,
+                         write_black_ram_command=write_black_ram_command,
+                         write_color_ram_command=write_color_ram_command,
                          black_bits_inverted=black_bits_inverted,
                          color_bits_inverted=color_bits_inverted,
                          refresh_display_command=0x12)
