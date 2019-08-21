@@ -19,7 +19,8 @@ epd_dc = board.D10
 display_bus = displayio.FourWire(board.SPI(), command=epd_dc, chip_select=epd_cs, baudrate=1000000)
 time.sleep(1)
 
-display = adafruit_il0373.IL0373(display_bus, width=212, height=104, rotation=90, highlight_color=0xff0000)
+display = adafruit_il0373.IL0373(display_bus, width=212, height=104, rotation=90,
+                                 highlight_color=0xff0000)
 
 g = displayio.Group()
 

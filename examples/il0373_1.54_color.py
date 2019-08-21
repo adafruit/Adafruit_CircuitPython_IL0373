@@ -22,10 +22,12 @@ epd_dc = board.D8
 epd_reset = board.D7
 epd_busy = board.D6
 
-display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs, reset=epd_reset, baudrate=1000000)
+display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs, reset=epd_reset,
+                                 baudrate=1000000)
 time.sleep(1)
 
-display = adafruit_il0373.IL0373(display_bus, width=152, height=152, busy_pin=epd_busy, highlight_color=0xff0000)
+display = adafruit_il0373.IL0373(display_bus, width=152, height=152, busy_pin=epd_busy,
+                                 highlight_color=0xff0000)
 
 g = displayio.Group()
 

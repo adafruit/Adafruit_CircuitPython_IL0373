@@ -33,8 +33,11 @@ Implementation Notes
 
 **Hardware:**
 
-.. todo:: Add links to any specific hardware product page(s), or category page(s). Use unordered list & hyperlink rST
-   inline format: "* `Link Text <url>`_"
+* `Adafruit 1.54" Tri-Color Display Breakout <https://www.adafruit.com/product/3625>`_
+* `Adafruit 2.13" Tri-Color Display Breakout <https://www.adafruit.com/product/4086>`_
+* `Adafruit Flexible 2.9" Black and White <https://www.adafruit.com/product/4262>`_
+* `Adafruit Flexible 2.13" Black and White <https://www.adafruit.com/product/4243>`_
+* `Adafruit 2.13" Tri-Color FeatherWing <https://www.adafruit.com/product/4128>`_
 
 **Software and Dependencies:**
 
@@ -94,4 +97,5 @@ class IL0373(displayio.EPaperDisplay):
                          busy_state=False,
                          write_black_ram_command=write_black_ram_command, write_color_ram_command=write_color_ram_command,
                          black_bits_inverted=black_bits_inverted,
-                         color_bits_inverted=color_bits_inverted, refresh_display_command=0x12)
+                         color_bits_inverted=color_bits_inverted,
+                         refresh_display_command=0x12)

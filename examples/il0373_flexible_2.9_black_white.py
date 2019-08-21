@@ -26,7 +26,8 @@ display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs, reset=
                                  baudrate=1000000)
 time.sleep(1)
 
-display = adafruit_il0373.IL0373(display_bus, width=296, height=128, rotation=90, busy_pin=epd_busy, swap_rams=True)
+display = adafruit_il0373.IL0373(display_bus, width=296, height=128, rotation=90, busy_pin=epd_busy,
+                                 swap_rams=True)
 
 g = displayio.Group()
 
