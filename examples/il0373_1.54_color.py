@@ -7,19 +7,16 @@ Supported products:
 
 import time
 import board
-import busio
 import displayio
 import adafruit_il0373
 
 displayio.release_displays()
 
-# This pinout works on a Metro and may need to be altered for other boards.
-
-# For breadboarding
-spi = busio.SPI(board.SCL, board.SDA)
+# This pinout works on a Feather M4 and may need to be altered for other boards.
+spi = board.SPI() # Uses SCK and MOSI
 epd_cs = board.D9
-epd_dc = board.D8
-epd_reset = board.D7
+epd_dc = board.D10
+epd_reset = board.D5
 epd_busy = board.D6
 
 display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs, reset=epd_reset,
