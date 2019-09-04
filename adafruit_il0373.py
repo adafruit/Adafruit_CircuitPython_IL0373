@@ -33,8 +33,11 @@ Implementation Notes
 
 **Hardware:**
 
-.. todo:: Add links to any specific hardware product page(s), or category page(s). Use unordered list & hyperlink rST
-   inline format: "* `Link Text <url>`_"
+* `Adafruit 1.54" Tri-Color Display Breakout <https://www.adafruit.com/product/3625>`_
+* `Adafruit 2.13" Tri-Color Display Breakout <https://www.adafruit.com/product/4086>`_
+* `Adafruit Flexible 2.9" Black and White <https://www.adafruit.com/product/4262>`_
+* `Adafruit Flexible 2.13" Black and White <https://www.adafruit.com/product/4243>`_
+* `Adafruit 2.13" Tri-Color FeatherWing <https://www.adafruit.com/product/4128>`_
 
 **Software and Dependencies:**
 
@@ -64,11 +67,10 @@ _STOP_SEQUENCE = (
     b"\x82\x01\x00" # VCM DC and delay 50ms
     b"\x02\x00" # Power off
 )
-
 # pylint: disable=too-few-public-methods
 class IL0373(displayio.EPaperDisplay):
     """IL0373 driver"""
-    def __init__(self, bus, **kwargs):
+    def __init__(self, bus, swap_rams=False, **kwargs):
         start_sequence = bytearray(_START_SEQUENCE)
 
         width = kwargs["width"]
@@ -80,8 +82,21 @@ class IL0373(displayio.EPaperDisplay):
         start_sequence[26] = width & 0xFF
         start_sequence[27] = (height >> 8) & 0xFF
         start_sequence[28] = height & 0xFF
+        if swap_rams:
+            color_bits_inverted = kwargs.get("black_bits_inverted", False)
+            write_color_ram_command = 0x10
+            black_bits_inverted = kwargs.get("color_bits_inverted", True)
+            write_black_ram_command = 0x13
+        else:
+            write_black_ram_command = 0x10
+            write_color_ram_command = 0x13
+            color_bits_inverted = kwargs.get("color_bits_inverted", True)
+            black_bits_inverted = kwargs.get("black_bits_inverted", False)
         super().__init__(bus, start_sequence, _STOP_SEQUENCE, **kwargs,
                          ram_width=160, ram_height=296,
                          busy_state=False,
-                         write_black_ram_command=0x10, write_color_ram_command=0x13,
-                         color_bits_inverted=True, refresh_display_command=0x12)
+                         write_black_ram_command=write_black_ram_command,
+                         write_color_ram_command=write_color_ram_command,
+                         black_bits_inverted=black_bits_inverted,
+                         color_bits_inverted=color_bits_inverted,
+                         refresh_display_command=0x12)
