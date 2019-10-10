@@ -22,7 +22,7 @@ epd_reset = board.D5
 epd_busy = board.D6
 
 # Create the displayio connection to the display pins
-display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs, 
+display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs,
                                  reset=epd_reset, baudrate=1000000)
 time.sleep(1)  # Wait a bit
 
@@ -46,7 +46,7 @@ g.append(t)
 display.show(g)
 
 # Refresh the display to have it actually show
-# NOTE: Do not refresh eInk displays more often than seconds or more! 
+# NOTE: Do not refresh eInk displays more often than seconds or more!
 display.refresh()
 print("refreshed")
 
