@@ -45,9 +45,9 @@ g.append(t)
 # Place the display group on the screen
 display.show(g)
 
-# Refresh the display to have it actually show
-# NOTE: Do not refresh eInk displays more often than seconds or more!
+# Refresh the display to have it actually show the image
+# NOTE: Do not refresh eInk displays sooner than 180 seconds
 display.refresh()
 print("refreshed")
 
-time.sleep(120)
+time.sleep(180)
