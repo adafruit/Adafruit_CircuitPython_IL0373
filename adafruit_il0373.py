@@ -83,15 +83,15 @@ class IL0373(displayio.EPaperDisplay):
         start_sequence[27] = (height >> 8) & 0xFF
         start_sequence[28] = height & 0xFF
         if swap_rams:
-            color_bits_inverted = kwargs.get("black_bits_inverted", False)
+            color_bits_inverted = kwargs.pop("black_bits_inverted", False)
             write_color_ram_command = 0x10
-            black_bits_inverted = kwargs.get("color_bits_inverted", True)
+            black_bits_inverted = kwargs.pop("color_bits_inverted", True)
             write_black_ram_command = 0x13
         else:
             write_black_ram_command = 0x10
             write_color_ram_command = 0x13
-            color_bits_inverted = kwargs.get("color_bits_inverted", True)
-            black_bits_inverted = kwargs.get("black_bits_inverted", False)
+            color_bits_inverted = kwargs.pop("color_bits_inverted", True)
+            black_bits_inverted = kwargs.pop("black_bits_inverted", False)
         super().__init__(bus, start_sequence, _STOP_SEQUENCE, **kwargs,
                          ram_width=160, ram_height=296,
                          busy_state=False,
