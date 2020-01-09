@@ -69,7 +69,25 @@ _STOP_SEQUENCE = (
 )
 # pylint: disable=too-few-public-methods
 class IL0373(displayio.EPaperDisplay):
-    """IL0373 driver"""
+    r"""IL0373 driver
+
+    :param bus: The data bus the display is on
+    :param bool swap_rams: Color and black rams/commands are swapped
+    :param \**kwargs:
+        See below
+
+    :Keyword Arguments:
+        * *width* (``int``) --
+          Display width
+        * *height* (``int``) --
+          Display height
+        * *rotation* (``int``) --
+          Display rotation
+        * *color_bits_inverted* (``bool``) --
+          Invert color bit values
+        * *black_bits_inverted* (``bool``) --
+          Invert black bit values
+    """
     def __init__(self, bus, swap_rams=False, **kwargs):
         start_sequence = bytearray(_START_SEQUENCE)
 
