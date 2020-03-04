@@ -52,20 +52,20 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IL0373.git"
 
 _START_SEQUENCE = (
-    b"\x01\x05\x03\x00\x2b\x2b\x09" # power setting
-    b"\x06\x03\x17\x17\x17" # booster soft start
-    b"\x04\x80\xc8" # power on and wait 200 ms
-    b"\x00\x01\xcf" # panel setting
-    b"\x50\x01\x37" # CDI setting
-    b"\x30\x01\x29" # PLL
-    b"\x61\x03\x00\x00\x00" # Resolution
-    b"\x82\x81\x32\x0a" # VCM DC and delay 50ms
+    b"\x01\x05\x03\x00\x2b\x2b\x09"  # power setting
+    b"\x06\x03\x17\x17\x17"  # booster soft start
+    b"\x04\x80\xc8"  # power on and wait 200 ms
+    b"\x00\x01\xcf"  # panel setting
+    b"\x50\x01\x37"  # CDI setting
+    b"\x30\x01\x29"  # PLL
+    b"\x61\x03\x00\x00\x00"  # Resolution
+    b"\x82\x81\x32\x0a"  # VCM DC and delay 50ms
 )
 
 _STOP_SEQUENCE = (
-    b"\x50\x01\x17" # CDI setting
-    b"\x82\x01\x00" # VCM DC and delay 50ms
-    b"\x02\x00" # Power off
+    b"\x50\x01\x17"  # CDI setting
+    b"\x82\x01\x00"  # VCM DC and delay 50ms
+    b"\x02\x00"  # Power off
 )
 # pylint: disable=too-few-public-methods
 class IL0373(displayio.EPaperDisplay):
@@ -88,15 +88,14 @@ class IL0373(displayio.EPaperDisplay):
         * *black_bits_inverted* (``bool``) --
           Invert black bit values
     """
+
     def __init__(self, bus, swap_rams=False, **kwargs):
         start_sequence = bytearray(_START_SEQUENCE)
 
         width = kwargs["width"]
         height = kwargs["height"]
         if "rotation" in kwargs and kwargs["rotation"] % 180 != 0:
-            w = width
-            width = height
-            height = w
+            width, height = height, width
         start_sequence[26] = width & 0xFF
         start_sequence[27] = (height >> 8) & 0xFF
         start_sequence[28] = height & 0xFF
@@ -110,11 +109,17 @@ class IL0373(displayio.EPaperDisplay):
             write_color_ram_command = 0x13
             color_bits_inverted = kwargs.pop("color_bits_inverted", True)
             black_bits_inverted = kwargs.pop("black_bits_inverted", False)
-        super().__init__(bus, start_sequence, _STOP_SEQUENCE, **kwargs,
-                         ram_width=160, ram_height=296,
-                         busy_state=False,
-                         write_black_ram_command=write_black_ram_command,
-                         write_color_ram_command=write_color_ram_command,
-                         black_bits_inverted=black_bits_inverted,
-                         color_bits_inverted=color_bits_inverted,
-                         refresh_display_command=0x12)
+        super().__init__(
+            bus,
+            start_sequence,
+            _STOP_SEQUENCE,
+            **kwargs,
+            ram_width=160,
+            ram_height=296,
+            busy_state=False,
+            write_black_ram_command=write_black_ram_command,
+            write_color_ram_command=write_color_ram_command,
+            black_bits_inverted=black_bits_inverted,
+            color_bits_inverted=color_bits_inverted,
+            refresh_display_command=0x12,
+        )

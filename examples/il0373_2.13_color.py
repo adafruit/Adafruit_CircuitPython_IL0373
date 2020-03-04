@@ -22,14 +22,20 @@ epd_reset = board.D5
 epd_busy = board.D6
 
 # Create the displayio connection to the display pins
-display_bus = displayio.FourWire(spi, command=epd_dc, chip_select=epd_cs,
-                                 reset=epd_reset, baudrate=1000000)
+display_bus = displayio.FourWire(
+    spi, command=epd_dc, chip_select=epd_cs, reset=epd_reset, baudrate=1000000
+)
 time.sleep(1)  # Wait a bit
 
 # Create the display object - the third color is red (0xff0000)
-display = adafruit_il0373.IL0373(display_bus, width=212, height=104,
-                                 rotation=90, busy_pin=epd_busy,
-                                 highlight_color=0xff0000)
+display = adafruit_il0373.IL0373(
+    display_bus,
+    width=212,
+    height=104,
+    rotation=90,
+    busy_pin=epd_busy,
+    highlight_color=0xFF0000,
+)
 
 # Create a display group for our screen objects
 g = displayio.Group()
