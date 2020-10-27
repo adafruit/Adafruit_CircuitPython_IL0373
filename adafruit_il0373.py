@@ -55,11 +55,63 @@ _START_SEQUENCE = (
     b"\x01\x05\x03\x00\x2b\x2b\x09"  # power setting
     b"\x06\x03\x17\x17\x17"  # booster soft start
     b"\x04\x80\xc8"  # power on and wait 200 ms
-    b"\x00\x01\xcf"  # panel setting
+    b"\x00\x01\x0f"  # panel setting. Further filled in below.
     b"\x50\x01\x37"  # CDI setting
-    b"\x30\x01\x29"  # PLL
+    b"\x30\x01\x29"  # PLL set to 150 Hz
     b"\x61\x03\x00\x00\x00"  # Resolution
     b"\x82\x81\x32\x0a"  # VCM DC and delay 50ms
+)
+
+_GRAYSCALE_LUT = (
+  # Common voltage
+  b"\x20\x2a"
+  b"\x00\x0A\x00\x00\x00\x01"
+  b"\x60\x14\x14\x00\x00\x01"
+  b"\x00\x14\x00\x00\x00\x01"
+  b"\x00\x13\x0A\x01\x00\x01"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+
+  # White to White
+  b"\x21\x2a"
+  b"\x40\x0A\x00\x00\x00\x01"
+  b"\x90\x14\x14\x00\x00\x01"
+  b"\x10\x14\x0A\x00\x00\x01"
+  b"\xA0\x13\x01\x00\x00\x01"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+
+  # Black to White
+  b"\x22\x2a"
+  b"\x40\x0A\x00\x00\x00\x01"
+  b"\x90\x14\x14\x00\x00\x01"
+  b"\x00\x14\x0A\x00\x00\x01"
+  b"\x99\x0C\x01\x03\x04\x01"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+
+  # White to Black
+  b"\x23\x2a"
+  b"\x40\x0A\x00\x00\x00\x01"
+  b"\x90\x14\x14\x00\x00\x01"
+  b"\x00\x14\x0A\x00\x00\x01"
+  b"\x99\x0B\x04\x04\x01\x01"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+
+  # Black to Black
+  b"\x24\x2a"
+  b"\x80\x0A\x00\x00\x00\x01"
+  b"\x90\x14\x14\x00\x00\x01"
+  b"\x20\x14\x0A\x00\x00\x01"
+  b"\x50\x13\x01\x00\x00\x01"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
+  b"\x00\x00\x00\x00\x00\x00"
 )
 
 _STOP_SEQUENCE = (
@@ -90,7 +142,12 @@ class IL0373(displayio.EPaperDisplay):
     """
 
     def __init__(self, bus, swap_rams=False, **kwargs):
-        start_sequence = bytearray(_START_SEQUENCE)
+        if kwargs.get("grayscale", False):
+            start_sequence = bytearray(len(_START_SEQUENCE) + len(_GRAYSCALE_LUT))
+            start_sequence[:len(_START_SEQUENCE)] = _START_SEQUENCE
+            start_sequence[len(_START_SEQUENCE):] = _GRAYSCALE_LUT
+        else:
+            start_sequence = bytearray(_START_SEQUENCE)
 
         width = kwargs["width"]
         height = kwargs["height"]
@@ -109,6 +166,23 @@ class IL0373(displayio.EPaperDisplay):
             write_color_ram_command = 0x13
             color_bits_inverted = kwargs.pop("color_bits_inverted", True)
             black_bits_inverted = kwargs.pop("black_bits_inverted", False)
+        if "highlight_color" not in kwargs:
+            start_sequence[17] |= 1 << 4 # Set BWR to only do black and white.
+        if kwargs.get("grayscale", False):
+            start_sequence[17] |= 1 << 5 # Set REG_EN to use the LUT sequence from the registers.
+            start_sequence[6] = 0x13 # Boost the voltage
+            start_sequence[23] = 0x3C # PLL set to 50 Hz (M = 7, N = 4)
+
+        # Set the resolution to scan
+        if width > 128:
+            start_sequence[17] |= 0b11 << 5 # 160x296
+        elif height > 252 or width > 96:
+            start_sequence[17] |= 0b10 << 5 # 128x296
+        elif height > 230:
+            start_sequence[17] |= 0b01 << 5 # 96x252
+        else:
+            pass # 0b00 is 96x230
+
         super().__init__(
             bus,
             start_sequence,
