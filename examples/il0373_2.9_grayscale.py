@@ -1,7 +1,7 @@
 """Simple test script for 2.9" 296x128 grayscale display.
 
 Supported products:
-  * Adafruit Flexible 2.9" Monochrome
+  * Adafruit 2.9" Grayscale
     * https://www.adafruit.com/product/4777
   """
 
