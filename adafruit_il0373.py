@@ -63,55 +63,51 @@ _START_SEQUENCE = (
 )
 
 _GRAYSCALE_LUT = (
-  # Common voltage
-  b"\x20\x2a"
-  b"\x00\x0A\x00\x00\x00\x01"
-  b"\x60\x14\x14\x00\x00\x01"
-  b"\x00\x14\x00\x00\x00\x01"
-  b"\x00\x13\x0A\x01\x00\x01"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-
-  # White to White
-  b"\x21\x2a"
-  b"\x40\x0A\x00\x00\x00\x01"
-  b"\x90\x14\x14\x00\x00\x01"
-  b"\x10\x14\x0A\x00\x00\x01"
-  b"\xA0\x13\x01\x00\x00\x01"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-
-  # Black to White
-  b"\x22\x2a"
-  b"\x40\x0A\x00\x00\x00\x01"
-  b"\x90\x14\x14\x00\x00\x01"
-  b"\x00\x14\x0A\x00\x00\x01"
-  b"\x99\x0C\x01\x03\x04\x01"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-
-  # White to Black
-  b"\x23\x2a"
-  b"\x40\x0A\x00\x00\x00\x01"
-  b"\x90\x14\x14\x00\x00\x01"
-  b"\x00\x14\x0A\x00\x00\x01"
-  b"\x99\x0B\x04\x04\x01\x01"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-
-  # Black to Black
-  b"\x24\x2a"
-  b"\x80\x0A\x00\x00\x00\x01"
-  b"\x90\x14\x14\x00\x00\x01"
-  b"\x20\x14\x0A\x00\x00\x01"
-  b"\x50\x13\x01\x00\x00\x01"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
-  b"\x00\x00\x00\x00\x00\x00"
+    # Common voltage
+    b"\x20\x2a"
+    b"\x00\x0A\x00\x00\x00\x01"
+    b"\x60\x14\x14\x00\x00\x01"
+    b"\x00\x14\x00\x00\x00\x01"
+    b"\x00\x13\x0A\x01\x00\x01"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    # White to White
+    b"\x21\x2a"
+    b"\x40\x0A\x00\x00\x00\x01"
+    b"\x90\x14\x14\x00\x00\x01"
+    b"\x10\x14\x0A\x00\x00\x01"
+    b"\xA0\x13\x01\x00\x00\x01"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    # Black to White
+    b"\x22\x2a"
+    b"\x40\x0A\x00\x00\x00\x01"
+    b"\x90\x14\x14\x00\x00\x01"
+    b"\x00\x14\x0A\x00\x00\x01"
+    b"\x99\x0C\x01\x03\x04\x01"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    # White to Black
+    b"\x23\x2a"
+    b"\x40\x0A\x00\x00\x00\x01"
+    b"\x90\x14\x14\x00\x00\x01"
+    b"\x00\x14\x0A\x00\x00\x01"
+    b"\x99\x0B\x04\x04\x01\x01"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    # Black to Black
+    b"\x24\x2a"
+    b"\x80\x0A\x00\x00\x00\x01"
+    b"\x90\x14\x14\x00\x00\x01"
+    b"\x20\x14\x0A\x00\x00\x01"
+    b"\x50\x13\x01\x00\x00\x01"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00"
 )
 
 _STOP_SEQUENCE = (
@@ -144,8 +140,8 @@ class IL0373(displayio.EPaperDisplay):
     def __init__(self, bus, swap_rams=False, **kwargs):
         if kwargs.get("grayscale", False):
             start_sequence = bytearray(len(_START_SEQUENCE) + len(_GRAYSCALE_LUT))
-            start_sequence[:len(_START_SEQUENCE)] = _START_SEQUENCE
-            start_sequence[len(_START_SEQUENCE):] = _GRAYSCALE_LUT
+            start_sequence[: len(_START_SEQUENCE)] = _START_SEQUENCE
+            start_sequence[len(_START_SEQUENCE) :] = _GRAYSCALE_LUT
         else:
             start_sequence = bytearray(_START_SEQUENCE)
 
@@ -167,21 +163,23 @@ class IL0373(displayio.EPaperDisplay):
             color_bits_inverted = kwargs.pop("color_bits_inverted", True)
             black_bits_inverted = kwargs.pop("black_bits_inverted", False)
         if "highlight_color" not in kwargs:
-            start_sequence[17] |= 1 << 4 # Set BWR to only do black and white.
+            start_sequence[17] |= 1 << 4  # Set BWR to only do black and white.
         if kwargs.get("grayscale", False):
-            start_sequence[17] |= 1 << 5 # Set REG_EN to use the LUT sequence from the registers.
-            start_sequence[6] = 0x13 # Boost the voltage
-            start_sequence[23] = 0x3C # PLL set to 50 Hz (M = 7, N = 4)
+            start_sequence[17] |= (
+                1 << 5
+            )  # Set REG_EN to use the LUT sequence from the registers.
+            start_sequence[6] = 0x13  # Boost the voltage
+            start_sequence[23] = 0x3C  # PLL set to 50 Hz (M = 7, N = 4)
 
         # Set the resolution to scan
         if width > 128:
-            start_sequence[17] |= 0b11 << 5 # 160x296
+            start_sequence[17] |= 0b11 << 5  # 160x296
         elif height > 252 or width > 96:
-            start_sequence[17] |= 0b10 << 5 # 128x296
+            start_sequence[17] |= 0b10 << 5  # 128x296
         elif height > 230:
-            start_sequence[17] |= 0b01 << 5 # 96x252
+            start_sequence[17] |= 0b01 << 5  # 96x252
         else:
-            pass # 0b00 is 96x230
+            pass  # 0b00 is 96x230
 
         super().__init__(
             bus,

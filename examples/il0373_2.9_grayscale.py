@@ -24,9 +24,14 @@ display_bus = displayio.FourWire(
 time.sleep(1)
 
 display = adafruit_il0373.IL0373(
-    display_bus, width=296, height=128, rotation=270,
-    black_bits_inverted=False, color_bits_inverted=False, grayscale=True,
-    refresh_time=1
+    display_bus,
+    width=296,
+    height=128,
+    rotation=270,
+    black_bits_inverted=False,
+    color_bits_inverted=False,
+    grayscale=True,
+    refresh_time=1,
 )
 
 g = displayio.Group()
