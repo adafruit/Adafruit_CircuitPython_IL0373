@@ -59,10 +59,18 @@ _START_SEQUENCE = (
     b"\x50\x01\x37"  # CDI setting
     b"\x30\x01\x29"  # PLL set to 150 Hz
     b"\x61\x03\x00\x00\x00"  # Resolution
-    b"\x82\x81\x32\x0a"  # VCM DC and delay 50ms
+    b"\x82\x81\x12\x32"  # VCM DC and delay 50ms
 )
 
-_GRAYSCALE_LUT = (
+_GRAYSCALE_START_SEQUENCE = (
+    b"\x01\x05\x03\x00\x2b\x2b\x13"  # power setting
+    b"\x06\x03\x17\x17\x17"  # booster soft start
+    b"\x04\x80\xc8"  # power on and wait 200 ms
+    b"\x00\x01\x2f"  # panel setting. Further filled in below.
+    b"\x50\x01\x97"  # CDI setting
+    b"\x30\x01\x3C"  # PLL set to 50 Hz (M = 7, N = 4)
+    b"\x61\x03\x00\x00\x00"  # Resolution
+    b"\x82\x81\x12\x32"  # VCM DC and delay 50ms
     # Common voltage
     b"\x20\x2a"
     b"\x00\x0A\x00\x00\x00\x01"
@@ -112,7 +120,7 @@ _GRAYSCALE_LUT = (
 
 _STOP_SEQUENCE = (
     b"\x50\x01\x17"  # CDI setting
-    b"\x82\x01\x00"  # VCM DC and delay 50ms
+    b"\x82\x01\x00"  # VCM DC to -0.10 V
     b"\x02\x00"  # Power off
 )
 # pylint: disable=too-few-public-methods
@@ -139,9 +147,7 @@ class IL0373(displayio.EPaperDisplay):
 
     def __init__(self, bus, swap_rams=False, **kwargs):
         if kwargs.get("grayscale", False):
-            start_sequence = bytearray(len(_START_SEQUENCE) + len(_GRAYSCALE_LUT))
-            start_sequence[: len(_START_SEQUENCE)] = _START_SEQUENCE
-            start_sequence[len(_START_SEQUENCE) :] = _GRAYSCALE_LUT
+            start_sequence = bytearray(_GRAYSCALE_START_SEQUENCE)
         else:
             start_sequence = bytearray(_START_SEQUENCE)
 
@@ -164,12 +170,6 @@ class IL0373(displayio.EPaperDisplay):
             black_bits_inverted = kwargs.pop("black_bits_inverted", False)
         if "highlight_color" not in kwargs:
             start_sequence[17] |= 1 << 4  # Set BWR to only do black and white.
-        if kwargs.get("grayscale", False):
-            start_sequence[17] |= (
-                1 << 5
-            )  # Set REG_EN to use the LUT sequence from the registers.
-            start_sequence[6] = 0x13  # Boost the voltage
-            start_sequence[23] = 0x3C  # PLL set to 50 Hz (M = 7, N = 4)
 
         # Set the resolution to scan
         if width > 128:
