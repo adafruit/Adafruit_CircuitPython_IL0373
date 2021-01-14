@@ -173,11 +173,11 @@ class IL0373(displayio.EPaperDisplay):
 
         # Set the resolution to scan
         if width > 128:
-            start_sequence[17] |= 0b11 << 5  # 160x296
+            start_sequence[17] |= 0b11 << 6  # 160x296
         elif height > 252 or width > 96:
-            start_sequence[17] |= 0b10 << 5  # 128x296
+            start_sequence[17] |= 0b10 << 6  # 128x296
         elif height > 230:
-            start_sequence[17] |= 0b01 << 5  # 96x252
+            start_sequence[17] |= 0b01 << 6  # 96x252
         else:
             pass  # 0b00 is 96x230
 
