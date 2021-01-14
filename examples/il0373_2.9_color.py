@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
 """Simple test script for Adafruit 2.9" 296x128 tri-color display
 Supported products:
   * Adafruit 2.9" Tri-Color Display Breakout
