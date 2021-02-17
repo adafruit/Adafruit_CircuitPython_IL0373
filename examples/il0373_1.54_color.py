@@ -28,7 +28,12 @@ display_bus = displayio.FourWire(
 time.sleep(1)
 
 display = adafruit_il0373.IL0373(
-    display_bus, width=152, height=152, busy_pin=epd_busy, highlight_color=0xFF0000
+    display_bus,
+    width=152,
+    height=152,
+    busy_pin=epd_busy,
+    highlight_color=0xFF0000,
+    rotation=180,
 )
 
 g = displayio.Group()
