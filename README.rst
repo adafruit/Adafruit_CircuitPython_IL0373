@@ -28,9 +28,6 @@ This is easily achieved by downloading
 
 Installing from PyPI
 =====================
-.. note:: This library is not available on PyPI yet. Install documentation is included
-   as a standard element. Stay tuned for PyPI availability!
-
 On supported GNU/Linux systems like the Raspberry Pi, you can install the driver locally `from
 PyPI <https://pypi.org/project/adafruit-circuitpython-il0373/>`_. To install for current user:
 
@@ -86,7 +83,12 @@ Usage Example
     f = open("/display-ruler.bmp", "rb")
 
     pic = displayio.OnDiskBitmap(f)
-    t = displayio.TileGrid(pic, pixel_shader=displayio.ColorConverter())
+    # CircuitPython 6 & 7 compatible
+    t = displayio.TileGrid(
+        pic, pixel_shader=getattr(pic, "pixel_shader", displayio.ColorConverter())
+    )
+    # CircuitPython 7 compatible only
+    # t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
     g.append(t)
 
     display.show(g)
