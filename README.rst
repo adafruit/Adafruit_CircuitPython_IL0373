@@ -99,6 +99,11 @@ Usage Example
 
     time.sleep(120)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/il0373/en/latest/>`_.
+
 Contributing
 ============
 
