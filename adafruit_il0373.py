@@ -135,7 +135,6 @@ class IL0373(displayio.EPaperDisplay):
             start_sequence = bytearray(_GRAYSCALE_START_SEQUENCE)
         else:
             start_sequence = bytearray(_START_SEQUENCE)
-        print(kwargs)
         width = kwargs["width"]
         height = kwargs["height"]
         if "rotation" in kwargs and kwargs["rotation"] % 180 != 0:
