@@ -50,7 +50,7 @@ _GRAYSCALE_START_SEQUENCE = (
     b"\x06\x03\x17\x17\x17"  # booster soft start
     b"\x04\x80\xc8"  # power on and wait 200 ms
     b"\x00\x01\x2f"  # panel setting. Further filled in below.
-    b"\x50\x01\x97"  # CDI setting
+    b"\x50\x01\x17"  # CDI setting
     b"\x30\x01\x3C"  # PLL set to 50 Hz (M = 7, N = 4)
     b"\x61\x03\x00\x00\x00"  # Resolution
     b"\x82\x81\x12\x32"  # VCM DC and delay 50ms
@@ -112,6 +112,8 @@ class IL0373(displayio.EPaperDisplay):
 
     :param bus: The data bus the display is on
     :param bool swap_rams: Color and black rams/commands are swapped
+    :param border: If true, black border is drawn, if false white.
+                   If None, previous color remains.
     :param \**kwargs:
         See below
 
@@ -128,12 +130,12 @@ class IL0373(displayio.EPaperDisplay):
           Invert black bit values
     """
 
-    def __init__(self, bus, swap_rams=False, **kwargs):
+    def __init__(self, bus, swap_rams=False, border=False, **kwargs):
         if kwargs.get("grayscale", False):
             start_sequence = bytearray(_GRAYSCALE_START_SEQUENCE)
         else:
             start_sequence = bytearray(_START_SEQUENCE)
-
+        print(kwargs)
         width = kwargs["width"]
         height = kwargs["height"]
         if "rotation" in kwargs and kwargs["rotation"] % 180 != 0:
@@ -151,6 +153,11 @@ class IL0373(displayio.EPaperDisplay):
             write_color_ram_command = 0x13
             color_bits_inverted = kwargs.pop("color_bits_inverted", True)
             black_bits_inverted = kwargs.pop("black_bits_inverted", False)
+        if border is None:
+            start_sequence[20] |= 0b11 << 6  # Border remains unchanged
+        elif not border:
+            start_sequence[20] |= 0b01 << 6  # Border is White
+
         if "highlight_color" not in kwargs:
             start_sequence[17] |= 1 << 4  # Set BWR to only do black and white.
 
