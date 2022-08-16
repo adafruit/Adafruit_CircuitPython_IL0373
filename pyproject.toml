@@ -12,7 +12,7 @@ requires = [
 [project]
 name = "adafruit-circuitpython-il0373"
 description = "CircuitPython `displayio` driver for IL0373-based ePaper displays"
-version = "0.0.0-auto.0"
+version = "0.0.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
