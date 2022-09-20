@@ -31,6 +31,12 @@ Implementation Notes
 
 import displayio
 
+try:
+    from typing import Optional
+    from displayio import FourWire
+except ImportError:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_IL0373.git"
 
@@ -130,7 +136,13 @@ class IL0373(displayio.EPaperDisplay):
           Invert black bit values
     """
 
-    def __init__(self, bus, swap_rams=False, border=False, **kwargs):
+    def __init__(
+        self,
+        bus: FourWire,
+        swap_rams: bool = False,
+        border: Optional[bool] = False,
+        **kwargs
+    ) -> None:
         if kwargs.get("grayscale", False):
             start_sequence = bytearray(_GRAYSCALE_START_SEQUENCE)
         else:
