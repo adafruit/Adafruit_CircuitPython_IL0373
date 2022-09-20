@@ -33,7 +33,7 @@ import displayio
 
 try:
     from typing import Optional
-    from displayio import Fourwire
+    from displayio import FourWire
 except ImportError:
     pass
 
@@ -138,7 +138,7 @@ class IL0373(displayio.EPaperDisplay):
 
     def __init__(
         self,
-        bus: Fourwire,
+        bus: FourWire,
         swap_rams: bool = False,
         border: Optional[bool] = False,
         **kwargs
