@@ -112,6 +112,8 @@ _STOP_SEQUENCE = (
     b"\x82\x01\x00"  # VCM DC to -0.10 V
     b"\x02\x00"  # Power off
 )
+
+
 # pylint: disable=too-few-public-methods
 class IL0373(displayio.EPaperDisplay):
     r"""IL0373 driver
