@@ -12,6 +12,7 @@ import time
 import busio
 import board
 import displayio
+import fourwire
 import adafruit_il0373
 
 displayio.release_displays()
@@ -21,7 +22,7 @@ spi = busio.SPI(board.SCK, board.MOSI)  # Uses SCK and MOSI
 epd_cs = board.D9
 epd_dc = board.D10
 
-display_bus = displayio.FourWire(
+display_bus = fourwire.FourWire(
     spi, command=epd_dc, chip_select=epd_cs, baudrate=1000000
 )
 time.sleep(1)
@@ -49,7 +50,7 @@ with open("/display-ruler.bmp", "rb") as f:
     # t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
     g.append(t)
 
-    display.show(g)
+    display.root_group = g
 
     display.refresh()
 
