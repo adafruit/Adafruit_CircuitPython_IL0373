@@ -11,6 +11,7 @@ Supported products:
 import time
 import board
 import displayio
+import fourwire
 import adafruit_il0373
 
 # Used to ensure the display is free in CircuitPython
@@ -25,7 +26,7 @@ epd_reset = board.D5
 epd_busy = board.D6
 
 # Create the displayio connection to the display pins
-display_bus = displayio.FourWire(
+display_bus = fourwire.FourWire(
     spi, command=epd_dc, chip_select=epd_cs, reset=epd_reset, baudrate=1000000
 )
 time.sleep(1)  # Wait a bit
@@ -56,7 +57,7 @@ with open("/display-ruler.bmp", "rb") as f:
     g.append(t)
 
     # Place the display group on the screen
-    display.show(g)
+    display.root_group = g
 
     # Refresh the display to have it actually show the image
     # NOTE: Do not refresh eInk displays sooner than 180 seconds
