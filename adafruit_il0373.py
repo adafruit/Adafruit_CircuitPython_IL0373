@@ -32,7 +32,6 @@ Implementation Notes
 try:
     from epaperdisplay import EPaperDisplay
 except ImportError:
-    
     from displayio import EPaperDisplay
 
 try:
@@ -43,6 +42,7 @@ try:
     try:
         from fourwire import FourWire
     except ImportError:
+        # pylint: disable=ungrouped-imports
         from displayio import FourWire
 except ImportError:
     pass
