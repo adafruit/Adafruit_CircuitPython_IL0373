@@ -29,11 +29,21 @@ Implementation Notes
 
 """
 
-import displayio
+try:
+    from epaperdisplay import EPaperDisplay
+except ImportError:
+    
+    from displayio import EPaperDisplay
 
 try:
     from typing import Optional
-    from displayio import FourWire
+
+    # Compatibility with both CircuitPython 8.x.x and 9.x.x.
+    # Remove after 8.x.x is no longer a supported release.
+    try:
+        from fourwire import FourWire
+    except ImportError:
+        from displayio import FourWire
 except ImportError:
     pass
 
@@ -115,7 +125,7 @@ _STOP_SEQUENCE = (
 
 
 # pylint: disable=too-few-public-methods
-class IL0373(displayio.EPaperDisplay):
+class IL0373(EPaperDisplay):
     r"""IL0373 driver
 
     :param bus: The data bus the display is on
