@@ -9,9 +9,11 @@ Supported products:
 """
 
 import time
+
 import board
 import displayio
 import fourwire
+
 import adafruit_il0373
 
 # Used to ensure the display is free in CircuitPython

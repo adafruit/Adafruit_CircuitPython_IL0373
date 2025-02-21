@@ -6,12 +6,14 @@
 Supported products:
   * Adafruit 1.54" Tri-Color Display Breakout
     * https://www.adafruit.com/product/3625
-  """
+"""
 
 import time
+
 import board
 import displayio
 import fourwire
+
 import adafruit_il0373
 
 displayio.release_displays()

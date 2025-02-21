@@ -6,12 +6,14 @@
 Supported products:
   * Adafruit Flexible 2.13" Monochrome
     * https://www.adafruit.com/product/4243
-  """
+"""
 
 import time
+
 import board
 import displayio
 import fourwire
+
 import adafruit_il0373
 
 displayio.release_displays()
