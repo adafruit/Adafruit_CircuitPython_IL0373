@@ -6,12 +6,14 @@
 Supported products:
   * Adafruit 2.13" Tri-Color FeatherWing
     * https://www.adafruit.com/product/4128
-  """
+"""
 
 import time
+
 import board
 import displayio
 import fourwire
+
 import adafruit_il0373
 
 displayio.release_displays()
@@ -19,9 +21,7 @@ displayio.release_displays()
 epd_cs = board.D9
 epd_dc = board.D10
 
-display_bus = fourwire.FourWire(
-    board.SPI(), command=epd_dc, chip_select=epd_cs, baudrate=1000000
-)
+display_bus = fourwire.FourWire(board.SPI(), command=epd_dc, chip_select=epd_cs, baudrate=1000000)
 time.sleep(1)
 
 display = adafruit_il0373.IL0373(
