@@ -41,20 +41,15 @@ display = adafruit_il0373.IL0373(
 
 g = displayio.Group()
 
-with open("/display-ruler.bmp", "rb") as f:
-    pic = displayio.OnDiskBitmap(f)
-    # CircuitPython 6 & 7 compatible
-    t = displayio.TileGrid(
-        pic, pixel_shader=getattr(pic, "pixel_shader", displayio.ColorConverter())
-    )
-    # CircuitPython 7 compatible only
-    # t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
-    g.append(t)
 
-    display.root_group = g
+pic = displayio.OnDiskBitmap("/display-ruler.bmp")
+t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
+g.append(t)
 
-    display.refresh()
+display.root_group = g
 
-    print("refreshed")
+display.refresh()
 
-    time.sleep(120)
+print("refreshed")
+
+time.sleep(120)

@@ -47,23 +47,13 @@ display = adafruit_il0373.IL0373(
 g = displayio.Group()
 
 # Display a ruler graphic from the root directory of the CIRCUITPY drive
-with open("/display-ruler.bmp", "rb") as f:
-    pic = displayio.OnDiskBitmap(f)
-    # Create a Tilegrid with the bitmap and put in the displayio group
-    # CircuitPython 6 & 7 compatible
-    t = displayio.TileGrid(
-        pic, pixel_shader=getattr(pic, "pixel_shader", displayio.ColorConverter())
-    )
-    # CircuitPython 7 compatible only
-    # t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
-    g.append(t)
+pic = displayio.OnDiskBitmap("/display-ruler.bmp")
+t = displayio.TileGrid(pic, pixel_shader=pic.pixel_shader)
+g.append(t)
 
-    # Place the display group on the screen
-    display.root_group = g
+display.root_group = g
 
-    # Refresh the display to have it actually show the image
-    # NOTE: Do not refresh eInk displays sooner than 180 seconds
-    display.refresh()
-    print("refreshed")
+display.refresh()
 
-    time.sleep(180)
+print("refreshed")
+time.sleep(180)
